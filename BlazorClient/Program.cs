@@ -8,6 +8,8 @@ using System.Net.Http;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.Extensions.Configuration;
 
+// See https://medium.com/@marcodesanctis2/securing-blazor-webassembly-with-identity-server-4-ee44aa1687ef
+
 namespace BlazorClient
 {
     public class Program
@@ -32,6 +34,7 @@ namespace BlazorClient
 
             builder.Services.AddOidcAuthentication(options =>
             {
+                options.ProviderOptions.DefaultScopes.Clear();
                 builder.Configuration.Bind("oidc", options.ProviderOptions);
             });
 

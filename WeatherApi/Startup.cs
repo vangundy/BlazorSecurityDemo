@@ -32,7 +32,9 @@ namespace WeatherApi
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
+                    // base-address of your identityserver
                     options.Authority = "https://localhost:5000";
+                    // name of the API resource
                     options.Audience = "weatherapi";
                     options.TokenValidationParameters = new TokenValidationParameters()
                     {

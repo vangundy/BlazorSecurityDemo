@@ -21,7 +21,7 @@ namespace IdentityProvider
         public static IEnumerable<ApiResource> Apis =>
             new ApiResource[]
             {
-                new ApiResource("weatherapi", "The Weather API")
+                new ApiResource("weatherapi", "The Weather API", new string[] { "email" })
             };
 
 
