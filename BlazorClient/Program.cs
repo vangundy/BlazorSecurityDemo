@@ -1,12 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Text;
-using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.Extensions.DependencyInjection;
-using System.Net.Http;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
+using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 // See https://medium.com/@marcodesanctis2/securing-blazor-webassembly-with-identity-server-4-ee44aa1687ef
 
@@ -24,9 +22,9 @@ namespace BlazorClient
                 {
                     var handler = sp.GetService<AuthorizationMessageHandler>()
                         .ConfigureHandler(
-                            authorizedUrls: new[] { "https://localhost:5002" },
-                            scopes: new[] { "weatherapi" });
-
+                            authorizedUrls: builder.Configuration.GetSection("IdentityServer:MessageHandler:AuthorizedURLs").Get<List<string>>(),
+                            scopes: builder.Configuration.GetSection("IdentityServer:MessageHandler:Scopes").Get<List<string>>()
+                            );
                     return handler;
                 });
             
@@ -35,7 +33,7 @@ namespace BlazorClient
             builder.Services.AddOidcAuthentication(options =>
             {
                 options.ProviderOptions.DefaultScopes.Clear();
-                builder.Configuration.Bind("oidc", options.ProviderOptions);
+                builder.Configuration.Bind("IdentityServer", options.ProviderOptions);
             });
 
             await builder.Build().RunAsync();
